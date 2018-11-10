@@ -1,0 +1,1 @@
+sqlldr username/password@service control=loader.ctl
