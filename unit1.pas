@@ -45,11 +45,6 @@ begin
   StartDir := ExtractFilePath(ParamStr(0));
   ErrorMessage := '';
 
-  if FileExists(StartDir + 'config.ini') = false then begin
-    ShowMessage('Error! File config.ini does not exists!');
-    Application.Terminate;
-  end;
-
   ini := TINIFile.Create(StartDir + 'config.ini');
   Delimiter := ini.ReadString('Main', 'Delimiter', ';');
   DelimiterReplace := ini.ReadString('Main', 'DelimiterReplace', ',');
@@ -65,11 +60,8 @@ begin
   if Tags = '' then ErrorMessage := 'Error! Parameter Tags in config.ini is empty.';
   if InputFile = OutputFile then ErrorMessage := 'Error in config.ini InputFile = OutputFile';
   if Delimiter = DelimiterReplace then ErrorMessage := 'Error in config.ini Delimiter = DelimiterReplace';
+  if FileExists(StartDir + 'config.ini') = false then ErrorMessage := 'Error! File config.ini does not exists!';
 
-  if ErrorMessage <> '' then begin
-    ShowMessage(ErrorMessage);
-    Application.Terminate;
-  end;
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
@@ -78,6 +70,12 @@ var f1, f2: TextFile;
   i, i2, k, j: Integer;
   tm, tm1: DWORD;
 begin
+
+  if ErrorMessage <> '' then begin
+    ShowMessage(ErrorMessage);
+    Exit;
+  end;
+
   i := 1;
   i2 := 0;
   k := 0;
