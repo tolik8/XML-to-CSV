@@ -67,7 +67,7 @@ end;
 procedure TForm1.Button1Click(Sender: TObject);
 var f1, f2: TextFile;
   s, line, item: String;
-  i, i2, k, j: Integer;
+  i1, i2, k, j: Integer;
   tm, tm1: DWORD;
 begin
 
@@ -76,7 +76,7 @@ begin
     Exit;
   end;
 
-  i := 1;
+  i1 := 1;
   i2 := 0;
   k := 0;
   tm1 := GetTickCount64;
@@ -94,6 +94,7 @@ begin
   AssignFile(f2, OutputFile);
   Reset(f1);
   Rewrite(f2);
+
   while not EOF(f1) do begin
     ReadLn(f1, s);
 
@@ -103,8 +104,9 @@ begin
       line := line + item + Delimiter;
     end;
 
-    if (i >= StartFromLine) then WriteLn(f2, line);
-    inc(i);
+    if (i1 >= StartFromLine) then WriteLn(f2, line);
+
+    inc(i1);
     inc(k);
     if k >= 100000 then begin
       k := 0;
@@ -115,7 +117,7 @@ begin
   end;
   CloseFile(f1);
   CloseFile(f2);
-  Label3.Caption := 'Finish! Loaded ' + IntToStr(i-StartFromLine) + ' records';
+  Label3.Caption := 'Finish! Loaded ' + IntToStr(i1 - StartFromLine) + ' records';
   tm := GetTickCount64 - tm1;
   Label4.Caption := 'Time: ' + FloatToStr(Round(tm/1000)) + ' sec';
 end;
